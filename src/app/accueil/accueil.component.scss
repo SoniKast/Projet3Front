@@ -1,0 +1,12 @@
+.rangee {
+    display: flex;
+    background-color: darkgrey;
+    width: fit-content;
+    padding: 1em;
+
+    .place-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
