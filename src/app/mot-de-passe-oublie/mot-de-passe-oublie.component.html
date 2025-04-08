@@ -1,1 +1,22 @@
-<p>mot-de-passe-oublie works!</p>
+<div class="container d-flex justify-content-center">
+    <div class="row align-items-center">
+        <h1 class="text-center">Mot de passe oublié</h1>
+        <form [formGroup]="formulaire" (ngSubmit)="envoiMail()">
+            <div class="col text-center">
+                <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input type="email" matInput formControlName="email">
+                  @if(formulaire.get("email")?.hasError("required")) {
+                    <mat-error>L'email est requis</mat-error>
+                  }
+                  @if(formulaire.get("email")?.hasError("email")) {
+                    <mat-error>L'email est mal formé</mat-error>
+                  }
+                </mat-form-field>
+            </div>
+            <div class="col text-center">
+                <button type="submit" mat-raised-button>Envoyer l'email</button>
+            </div>
+        </form>
+    </div>
+</div>

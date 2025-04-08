@@ -7,13 +7,19 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnexionService } from '../connexion.service';
 
 @Component({
   selector: 'app-connexion',
-  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    MatInputModule,
+    MatButtonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   templateUrl: './connexion.component.html',
   styleUrl: './connexion.component.scss',
 })

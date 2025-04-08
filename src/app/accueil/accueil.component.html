@@ -1,17 +1,19 @@
-<div>
-    <h1>Places disponibles</h1>
+<div class="container d-flex justify-content-center">
+    <div class="row align-items-center">
+        <h1 class="text-center">Places disponibles</h1>
 
-    <div class="rangee">
-    @for(place of listePlace; track $index) {
-        <div class="place-container">
-            <app-place
-                [numero]="place.numero" 
-                (click)="onClickPlace(place)">
-            </app-place>
-            @if (utilisateurConnecte?.role == "ADMIN") {
-                <button mat-raised-button>Supprimer</button>
-            }
+        <div class="rangee">
+        @for(place of listePlace; track $index) {
+            <div class="place-container">
+                <app-place
+                    [numero]="place.numero" 
+                    (click)="onClickPlace(place)">
+                </app-place>
+                @if (utilisateurConnecte?.role == "ADMIN") {
+                    <button mat-raised-button>Supprimer</button>
+                }
+            </div>
+        }
         </div>
-    }
     </div>
 </div>
