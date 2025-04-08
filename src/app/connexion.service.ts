@@ -13,6 +13,12 @@ export class ConnexionService {
   http = inject(HttpClient);
   utilisateurConnecte = new BehaviorSubject<Utilisateur | null>(null);
 
+  public inscription(utilisateur: any): Observable<string> {
+    return this.http.post('http://localhost:8080/inscription', utilisateur, {
+      responseType: 'text',
+    });
+  }
+
   public connexion(utilisateur: any): Observable<string> {
     return this.http
       .post('http://localhost:8080/connexion', utilisateur, {

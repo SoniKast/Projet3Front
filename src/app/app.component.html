@@ -10,8 +10,14 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/" routerLinkActive="lien-actif">Accueil</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!(connexionService.utilisateurConnecte | async)">
+            <a class="nav-link" routerLink="inscription" routerLinkActive="lien-actif">Inscription</a>
+          </li>
+          <li class="nav-item" *ngIf="!(connexionService.utilisateurConnecte | async)">
             <a class="nav-link" routerLink="connexion" routerLinkActive="lien-actif">Connexion</a>
+          </li>
+          <li class="nav-item" *ngIf="connexionService.utilisateurConnecte | async as utilisateur">
+            <a class="nav-link" routerLinkActive="lien-actif" href="#" (click)="logOut()">Se déconnecter</a>
           </li>
         </ul>
         <form role="search">

@@ -1,25 +1,33 @@
-<form [formGroup]="formulaire" (ngSubmit)="onConnexion()">
+<div class="container d-flex justify-content-center">
+  <div class="row align-items-center">
+      <h1 class="text-center">Connexion</h1>
+    <form [formGroup]="formulaire" (ngSubmit)="onConnexion()">
 
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input type="email" matInput formControlName="email">
-      @if(formulaire.get("email")?.hasError("required")) {
-        <mat-error>L'email est requis</mat-error>
-      }
-      @if(formulaire.get("email")?.hasError("email")) {
-        <mat-error>L'email est mal formé</mat-error>
-      }
-  
-    </mat-form-field>
-  
-    <mat-form-field>
-      <mat-label>Mot de passe</mat-label>
-      <input type="password"
-             matInput
-             formControlName="password">
-      <mat-error>Le mot de passe est requis</mat-error>
-    </mat-form-field>
-  
-    <button type="submit" mat-raised-button>Se connecter</button>
-  
-  </form>
+      <div class="col text-center">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="email" matInput formControlName="email">
+          @if(formulaire.get("email")?.hasError("required")) {
+            <mat-error>L'email est requis</mat-error>
+          }
+          @if(formulaire.get("email")?.hasError("email")) {
+            <mat-error>L'email est mal formé</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="col text-center">
+        <mat-form-field>
+          <mat-label>Mot de passe</mat-label>
+          <input type="password"
+                matInput
+                formControlName="password">
+          <mat-error>Le mot de passe est requis</mat-error>
+        </mat-form-field>
+        <br>
+        <a class="text-start" routerLink="/forgotten-password" routerLinkActive="lien-actif">Mot de passe oublié ?</a>
+        <br>
+        <button type="submit" mat-raised-button>Se connecter</button> 
+      </div>
+    </form>
+  </div>
+</div>
