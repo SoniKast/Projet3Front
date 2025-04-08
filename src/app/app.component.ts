@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { AccueilComponent } from './accueil/accueil.component';
 import { ConnexionService } from './connexion.service';
 
 @Component({
@@ -10,10 +11,11 @@ import { ConnexionService } from './connexion.service';
 })
 export class AppComponent {
   connexionService = inject(ConnexionService);
+  utilisateurConnecte: Utilisateur | null = null;
 
   ngOnInit() {
-    this.connexionService.utilisateurConnecte.subscribe((utilisateur) => {
-      console.log(utilisateur);
-    });
+    this.connexionService.utilisateurConnecte.subscribe(
+      (utilisateur) => (this.utilisateurConnecte = utilisateur)
+    );
   }
 }

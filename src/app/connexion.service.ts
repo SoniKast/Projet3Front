@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConnexionService {
-  constructor() {}
+  constructor() {
+    this.extractUtilisateurFromJwt();
+  }
 
   http = inject(HttpClient);
   utilisateurConnecte = new BehaviorSubject<Utilisateur | null>(null);
@@ -19,17 +21,25 @@ export class ConnexionService {
       .pipe(
         tap((jwt) => {
           localStorage.setItem('jwt', jwt);
-          const partiesJwt = jwt.split('.');
-          const bodyBase64 = partiesJwt[1];
-          const bodyJson = atob(bodyBase64);
-          const body = JSON.parse(bodyJson);
-
-          this.utilisateurConnecte.next({
-            id: body.id,
-            email: body.email,
-            role: body.role,
-          });
+          this.extractUtilisateurFromJwt();
         })
       );
+  }
+
+  public extractUtilisateurFromJwt() {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt != null) {
+      const partiesJwt = jwt.split('.');
+      const bodyBase64 = partiesJwt[1];
+      const bodyJson = atob(bodyBase64);
+      const body = JSON.parse(bodyJson);
+
+      this.utilisateurConnecte.next({
+        id: body.id,
+        email: body.sub,
+        role: body.role,
+      });
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {
   FormBuilder,
@@ -7,14 +8,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnexionService } from '../connexion.service';
 
 @Component({
   selector: 'app-connexion',
-  imports: [MatButtonModule, ReactiveFormsModule, FormsModule, MatInputModule],
+  imports: [MatInputModule, MatButtonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './connexion.component.html',
   styleUrl: './connexion.component.scss',
 })
@@ -33,6 +33,7 @@ export class ConnexionComponent {
     if (this.formulaire.valid) {
       const utilisateur = this.formulaire.value;
 
+      console.log(utilisateur);
       this.connexionService.connexion(utilisateur).subscribe((jwt) => {
         this.notification.open('Vous êtes connecté', '', {
           duration: 5000,
