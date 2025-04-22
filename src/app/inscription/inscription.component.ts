@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -7,9 +7,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConnexionService } from '../connexion.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -18,12 +17,12 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './inscription.component.html',
   styleUrl: './inscription.component.scss',
 })
-export class InscriptionComponent {
-  connexionService = inject(ConnexionService);
+export class InscriptionComponent implements OnInit {
   formBuilder = inject(FormBuilder);
   router = inject(Router);
   notification = inject(MatSnackBar);
   exists: any;
+  route = inject(ActivatedRoute);
   http = inject(HttpClient);
 
   formulaire = this.formBuilder.group({
@@ -32,50 +31,36 @@ export class InscriptionComponent {
     role: ['EMPLOYE'],
   });
 
-  onInscription() {
-    if (!this.formulaire.valid) return;
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      const token = params['token'];
 
-    const utilisateur = this.formulaire.value;
-    const email = utilisateur.email;
-
-    this.http
-      .get<boolean>(`http://localhost:8080/utilisateur/exists?email=${email}`)
-      .subscribe({
-        next: (exists) => {
-          if (exists) {
-            this.formulaire.get('email')?.setErrors({ emailExiste: true });
-            this.notification.open('Cet email est déjà utilisé.', '', {
-              duration: 3000,
-              verticalPosition: 'top',
-            });
-          } else {
-            this.connexionService.inscription(utilisateur).subscribe({
-              next: () => {
-                this.notification.open('Inscription réussie !', '', {
-                  duration: 5000,
-                  verticalPosition: 'top',
-                });
-                this.router.navigateByUrl('/connexion');
-              },
-              error: () => {
-                this.notification.open("Erreur lors de l'inscription.", '', {
-                  duration: 5000,
-                  verticalPosition: 'top',
-                });
-              },
-            });
-          }
-        },
-        error: () => {
-          this.notification.open(
-            "Erreur lors de la vérification de l'email.",
-            '',
-            {
-              duration: 5000,
-              verticalPosition: 'top',
-            }
-          );
-        },
-      });
+      if (token) {
+        this.http
+          .post('http://localhost:8080/valider-inscription', token, {
+            headers: { 'Content-Type': 'text/plain' },
+          })
+          .subscribe({
+            next: () => {
+              this.notification.open('Inscription confirmée avec succès.', '', {
+                duration: 4000,
+                verticalPosition: 'top',
+              });
+              this.router.navigateByUrl('/connexion');
+            },
+            error: () => {
+              this.notification.open('Lien invalide ou expiré.', '', {
+                duration: 4000,
+                verticalPosition: 'top',
+              });
+            },
+          });
+      } else {
+        this.notification.open('Aucun token fourni.', '', {
+          duration: 4000,
+          verticalPosition: 'top',
+        });
+      }
+    });
   }
 }
